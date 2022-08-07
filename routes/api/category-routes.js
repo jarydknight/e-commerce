@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
     res.json(data)
   })
   .catch((err) => {
+    console.log(err);
     res.status(500).json(err)
   })
 });
@@ -38,6 +39,7 @@ router.get('/:id', (req, res) => {
     res.json(data)
   })
   .catch((err) => {
+    console.log(err);
     res.status(500).json(err);
   })
 });
@@ -51,12 +53,29 @@ router.post('/', (req, res) => {
     res.json(data);
   })
   .catch(err => {
+    console.log(err);
     res.status(500).json(err);
   })
 });
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  Category.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(data => {
+    if (!data) {
+      res.status(400).json({message: "No category found with this ID."});
+      return;
+    }
+    res.json(data);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
 });
 
 router.delete('/:id', (req, res) => {
